@@ -2,7 +2,7 @@
 #
 from dolfin import *
 
-def burgers_time_viscous ( e_num, kappa, c):
+def burgers_time_viscous ( e_num, kappa, c,u_left,u_right):
 
 #*****************************************************************************80
 #
@@ -58,12 +58,12 @@ def burgers_time_viscous ( e_num, kappa, c):
 #  if X <= XLEFT + eps, then U = U_LEFT
 #  if X_RIGHT - eps <= X, then U = U_RIGHT
 #
-  u_left = 0.0
+  #u_left = 0.0
   def on_left ( x, on_boundary ):
     return ( on_boundary and near ( x[0], x_left ) )
   bc_left = DirichletBC ( V, u_left, on_left )
 
-  u_right = 0.0
+  #u_right = 0.0
   def on_right ( x, on_boundary ):
     return ( on_boundary and near ( x[0], x_right ) )
   bc_right = DirichletBC ( V, u_right, on_right )
@@ -192,7 +192,9 @@ def burgers_time_viscous_test ( ):
   nu = np.zeros(e_num+1)
   c  = np.ones(e_num+1)
   #nu[int(e_num/2):] = 0.0*np.ones(int(e_num/2)+1)
-  burgers_time_viscous ( e_num, nu,c )
+  u_l = 0.0
+  u_r = 0.0
+  burgers_time_viscous ( e_num, nu,c,u_l,u_r )
 #
 #  Terminate.
 #
