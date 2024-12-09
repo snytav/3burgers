@@ -2,7 +2,7 @@
 #
 from dolfin import *
 
-def burgers_time_viscous ( e_num, kappa, c,u_left,u_right):
+def burgers_time_viscous ( e_num, kappa, c,u_left,u_right,u_IC):
 
 #*****************************************************************************80
 #
@@ -46,7 +46,7 @@ def burgers_time_viscous ( e_num, kappa, c,u_left,u_right):
 #
   x_left = 0.0
   x_right = +1.0
-  mesh = IntervalMesh ( e_num, x_left, x_right )
+  mesh = IntervalMesh ( e_num, x_left, x_right)
 #
 #  Define the function space to be of Lagrange type
 #  using piecewise linear basis functions.
@@ -73,6 +73,7 @@ def burgers_time_viscous ( e_num, kappa, c,u_left,u_right):
 #  Define the initial condition.
 #
   u_init = Expression ( "sin(3.141*x[0])", degree = 1 )
+
 #
 #  Define the trial functions (u) and test functions (v).
 #
@@ -83,6 +84,8 @@ def burgers_time_viscous ( e_num, kappa, c,u_left,u_right):
   vel = Function(V)
   nu.vector()[:] = kappa
   vel.vector()[:] = c
+  u_init = Function(V)
+  u_init.vector()[:] = u_IC
 
 #
 #  Set U and U0 by interpolation.
@@ -194,7 +197,9 @@ def burgers_time_viscous_test ( ):
   #nu[int(e_num/2):] = 0.0*np.ones(int(e_num/2)+1)
   u_l = 0.0
   u_r = 0.0
-  burgers_time_viscous ( e_num, nu,c,u_l,u_r )
+  xx = np.linspace(0,1,e_num+1)
+  u0 = np.sin(np.pi*xx)
+  burgers_time_viscous ( e_num, nu,c,u_l,u_r,u0 )
 #
 #  Terminate.
 #
