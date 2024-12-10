@@ -132,7 +132,7 @@ def convection_diffusion( e_num, kappa, c,u_left,u_right,u_IC):
 
   while ( True ):
 
-    if ( k % 10 == 0 ):
+    if ( k % 10 == -1 ):
       plot ( u, title = ( 'burgers time viscous %g' % ( t ) ) )
       plt.grid ( True )
       filename = ( 'burgers_time_viscous_%d.png' % ( k ) )
@@ -153,7 +153,7 @@ def convection_diffusion( e_num, kappa, c,u_left,u_right,u_IC):
 
     u_old.assign ( u )
 
-  return
+  return u.vector().get_local()
 
 def burgers_time_viscous_test ( ):
 
@@ -190,15 +190,15 @@ def burgers_time_viscous_test ( ):
   print ( '  FENICS version %s'% ( dolfin.__version__ ) )
   print ( '  Solve the time-dependent 1d viscous Burgers equation.' )
 
-  e_num = 32
-  import numpy as np
-  nu = np.zeros(e_num+1)
-  c  = np.ones(e_num+1)
-  #nu[int(e_num/2):] = 0.0*np.ones(int(e_num/2)+1)
-  u_l = 0.0
-  u_r = 0.0
-  xx = np.linspace(0,1,e_num+1)
-  u0 = np.sin(np.pi*xx)
+  # e_num = 32
+  # import numpy as np
+  # nu = np.zeros(e_num+1)
+  # c  = np.ones(e_num+1)
+  # #nu[int(e_num/2):] = 0.0*np.ones(int(e_num/2)+1)
+  # u_l = 0.0
+  # u_r = 0.0
+  # xx = np.linspace(0,1,e_num+1)
+  # u0 = np.sin(np.pi*xx)
   burgers_time_viscous ( e_num, nu,c,u_l,u_r,u0 )
 #
 #  Terminate.
